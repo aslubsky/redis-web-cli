@@ -12,6 +12,11 @@ app.get('/', function (req, res) {
     res.sendfile('index.html');
 });
 
+io.configure(function () {
+    io.set("transports", ["xhr-polling"]);
+    io.set("polling duration", 10);
+});
+
 ///REDIS_URL:
 
 io.on('connection', function (socket) {
