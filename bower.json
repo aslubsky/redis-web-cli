@@ -1,0 +1,21 @@
+{
+  "name": "redis-web-cli",
+  "description": "",
+  "main": "index.html",
+  "authors": [
+    "Alex Slubsky <aslubsky@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/aslubsky/redis-web-cli",
+  "dependencies": {
+    "socket.io-client": ">=1.3.7",
+    "pym.js": "git://github.com/davintoo/pym.js.git#master"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

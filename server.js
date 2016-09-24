@@ -2,7 +2,8 @@ var redis = require("redis");
 
 //console.log(process.env.REDIS_URL);
 
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http, {
     transports: ['polling'],
@@ -12,12 +13,12 @@ var io = require('socket.io')(http, {
 app.get('/', function (req, res) {
     res.sendfile('index.html');
 });
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 ///REDIS_URL:
 
 io.on('connection', function (socket) {
     console.log('a user connected');
-    console.log('redis', redis);
 
     if (process.env.REDIS_URL) {
         var rtg = require("url").parse(process.env.REDIS_URL);

@@ -11,6 +11,7 @@
 
         body {
             font: 12px Droid Sans Mono, Courier;
+            background-color: #000;
         }
 
         #terminal {
@@ -28,6 +29,7 @@
         #terminal-input {
             background-color: #000;
             border: 0 none;
+            outline: none;
             border-radius: 0;
             color: #00aa00;
             width: 100%;
@@ -40,8 +42,10 @@
     <div id="terminal-res"></div>
     <input id="terminal-input" onkeypress="return runCmd(event)" type="text">
 </div>
-<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script src="bower_components/socket.io-client/socket.io.js"></script>
+<script src="bower_components/pym.js/dist/pym.min.js"></script>
 <script>
+    var pymChild = new pym.Child();
     var terminalRes = document.getElementById("terminal-res");
     var socket = io();
     function outResult(msg) {
