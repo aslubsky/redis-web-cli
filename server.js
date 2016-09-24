@@ -1,12 +1,6 @@
-if (process.env.REDIS_URL) {
-    var rtg = require("url").parse(process.env.REDIS_URL);
-    var redis = require("redis").createClient(rtg.port, rtg.hostname);
-    redis.auth(rtg.auth.split(":")[1]);
-} else {
-    var redis = require("redis");
-}
+var redis = require("redis");
 
-console.log(process.env.REDIS_URL);
+//console.log(process.env.REDIS_URL);
 
 var app = require('express')();
 var http = require('http').Server(app);
@@ -25,7 +19,13 @@ io.on('connection', function (socket) {
     console.log('a user connected');
     console.log('redis', redis);
 
-    var client = redis.createClient();
+    if (process.env.REDIS_URL) {
+        var rtg = require("url").parse(process.env.REDIS_URL);
+        var client = redis.createClient(rtg.port, rtg.hostname);
+        redis.auth(rtg.auth.split(":")[1]);
+    } else {
+        var client = redis.createClient();
+    }
 
     client.on("error", function (err) {
         console.log("Error " + err);
