@@ -1,20 +1,20 @@
-//var redis = require("redis");
-var rtg   = require("url").parse(process.env.REDIS_URL);
-var redis = require("redis").createClient(rtg.port, rtg.hostname);
-redis.auth(rtg.auth.split(":")[1]);
+if (process.env.REDIS_URL) {
+    var rtg = require("url").parse(process.env.REDIS_URL);
+    var redis = require("redis").createClient(rtg.port, rtg.hostname);
+    redis.auth(rtg.auth.split(":")[1]);
+} else {
+    var redis = require("redis");
+}
 
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
-
+var io = require('socket.io')(http, {
+    transports: ['polling'],
+    'polling duration': 10
+});
 
 app.get('/', function (req, res) {
     res.sendfile('index.html');
-});
-
-io.configure(function () {
-    io.set("transports", ["xhr-polling"]);
-    io.set("polling duration", 10);
 });
 
 ///REDIS_URL:
@@ -55,6 +55,6 @@ io.on('connection', function (socket) {
 });
 
 
-http.listen((process.env.PORT || 5000), function(){
+http.listen((process.env.PORT || 5000), function () {
     console.log('listening on *:5000');
 });
