@@ -6,7 +6,7 @@ if (process.env.REDIS_URL) {
     var redis = require("redis");
 }
 
-console.log(process.env.REDIS_URL, redis);
+console.log(process.env.REDIS_URL);
 
 var app = require('express')();
 var http = require('http').Server(app);
@@ -22,7 +22,8 @@ app.get('/', function (req, res) {
 ///REDIS_URL:
 
 io.on('connection', function (socket) {
-    //console.log('a user connected');
+    console.log('a user connected');
+    console.log('redis', redis);
 
     var client = redis.createClient();
 
