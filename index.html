@@ -52,6 +52,7 @@
         var el = document.createElement('pre');
         el.innerHTML = msg;
         terminalRes.appendChild(el);
+        pymChild.sendHeight();
     }
     socket.on('sioerr', outResult);
     socket.on('sioout', outResult);
