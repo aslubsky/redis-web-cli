@@ -4,15 +4,16 @@
         <title></title>
         <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font: 13px Helvetica, Arial; }
+        body { font: 12px Droid Sans Mono, Courier; }
         #terminal {
             background-color: #000;
             color: #17f018;
             padding: 10px;
         }
         #terminal-res {
-            font-size: 12px;
             line-height: 16px;
+            max-height: 242px;
+            overflow: auto;
         }
         #terminal-input {
             background-color: #000;
@@ -32,25 +33,21 @@
         <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
         <script>
             var terminalRes = document.getElementById("terminal-res");
-            var socket = io('http://localhost:3000');
-            socket.on('sioerr', function(msg){
-                //console.error(msg);
-                var el = document.createElement('div');
+            var socket = io();
+            function outResult(msg) {
+                var el = document.createElement('pre');
                 el.innerHTML = msg;
-                terminalRes.appendChild(el);  
-            });
-            socket.on('sioout', function(msg){
-                //console.info(msg);
-                var el = document.createElement('div');
-                el.innerHTML = msg;
-                terminalRes.appendChild(el);  
-            });
+                terminalRes.appendChild(el);
+            }
+            socket.on('sioerr', outResult);
+            socket.on('sioout', outResult);
             var terminalInput = document.getElementById("terminal-input");
             terminalInput.onkeypress = function(e) {
                 if (e.which == 13 || e.keyCode == 13) {
                     //console.log('e', e);
                     console.log('terminalInput', terminalInput.value);
                     socket.emit('sioin', terminalInput.value);
+                    outResult(terminalInput.value);
                     terminalInput.value = '';
                     e.preventDefault();
                     return false;
