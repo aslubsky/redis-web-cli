@@ -43,7 +43,7 @@
 <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script>
     var terminalRes = document.getElementById("terminal-res");
-    var socket = io('//' + window.location.hostname + ':3000');
+    var socket = io('//' + window.location.hostname + ':5000');
     function outResult(msg) {
         var el = document.createElement('pre');
         el.innerHTML = msg;

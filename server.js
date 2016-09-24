@@ -1,4 +1,8 @@
-var redis = require("redis");
+//var redis = require("redis");
+var rtg   = require("url").parse(process.env.REDIS_URL);
+var redis = require("redis").createClient(rtg.port, rtg.hostname);
+redis.auth(rtg.auth.split(":")[1]);
+
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -7,6 +11,8 @@ var io = require('socket.io')(http);
 app.get('/', function (req, res) {
     res.sendfile('index.html');
 });
+
+///REDIS_URL:
 
 io.on('connection', function (socket) {
     //console.log('a user connected');
@@ -43,6 +49,6 @@ io.on('connection', function (socket) {
     });
 });
 
-http.listen(3000, function () {
-    console.log('listening on *:3000');
+http.listen(5000, function () {
+    console.log('listening on *:5000');
 });
