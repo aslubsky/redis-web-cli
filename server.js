@@ -4,13 +4,13 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
     res.sendfile('index.html');
 });
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
     //console.log('a user connected');
-  
+
     var client = redis.createClient();
 
     client.on("error", function (err) {
@@ -19,11 +19,11 @@ io.on('connection', function(socket){
 
     //client.set("string key", "string val", redis.print);
     //client.get("string key", "string val", redis.print);
-    
-    socket.on('sioin', function(msg){
+
+    socket.on('sioin', function (msg) {
         var args = msg.split(' ');
         var cmd = args.shift();
-        if(cmd == 'set') {
+        if (cmd == 'set') {
             var key = args.shift();
             args = [
                 key,
@@ -33,7 +33,7 @@ io.on('connection', function(socket){
         //console.log('message: ', cmd, args);
         args.push(function (err, res) {
             //console.log('cb', err, res);
-            if(err) {
+            if (err) {
                 socket.emit('sioerr', err);
             } else {
                 socket.emit('sioout', res);
@@ -43,6 +43,6 @@ io.on('connection', function(socket){
     });
 });
 
-http.listen(80, function(){
-    //console.log('listening on *:3000');
+http.listen(3000, function () {
+    console.log('listening on *:3000');
 });

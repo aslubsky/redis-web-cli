@@ -1,20 +1,30 @@
 <!doctype html>
 <html>
-    <head>
-        <title></title>
-        <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font: 12px Droid Sans Mono, Courier; }
+<head>
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 12px Droid Sans Mono, Courier;
+        }
+
         #terminal {
             background-color: #000;
             color: #17f018;
             padding: 10px;
         }
+
         #terminal-res {
             line-height: 16px;
             max-height: 242px;
             overflow: auto;
         }
+
         #terminal-input {
             background-color: #000;
             border: 0 none;
@@ -23,40 +33,40 @@
             width: 100%;
             margin-top: 5px;
         }
-        </style>
-    </head>
-    <body>
-        <div id="terminal">
-            <div id="terminal-res"></div>
-            <input id="terminal-input" onkeypress="return runCmd(event)" type="text">
-        </div>
-        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-        <script>
-            var terminalRes = document.getElementById("terminal-res");
-            var socket = io();
-            function outResult(msg) {
-                var el = document.createElement('pre');
-                el.innerHTML = msg;
-                terminalRes.appendChild(el);
-            }
-            socket.on('sioerr', outResult);
-            socket.on('sioout', outResult);
-            var terminalInput = document.getElementById("terminal-input");
-            terminalInput.onkeypress = function(e) {
-                if (e.which == 13 || e.keyCode == 13) {
-                    //console.log('e', e);
-                    console.log('terminalInput', terminalInput.value);
-                    socket.emit('sioin', terminalInput.value);
-                    outResult(terminalInput.value);
-                    terminalInput.value = '';
-                    e.preventDefault();
-                    return false;
-                }
-                return true;
-            }
-            terminalInput.focus();
-            //socket.emit('sioin', 'set users:leto "{name: leto, planet: dune, likes: [spice]}"');
-            //socket.emit('sioin', 'get users:leto');
-        </script>
-    </body>
+    </style>
+</head>
+<body>
+<div id="terminal">
+    <div id="terminal-res"></div>
+    <input id="terminal-input" onkeypress="return runCmd(event)" type="text">
+</div>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script>
+    var terminalRes = document.getElementById("terminal-res");
+    var socket = io('//' + window.location.hostname + ':3000');
+    function outResult(msg) {
+        var el = document.createElement('pre');
+        el.innerHTML = msg;
+        terminalRes.appendChild(el);
+    }
+    socket.on('sioerr', outResult);
+    socket.on('sioout', outResult);
+    var terminalInput = document.getElementById("terminal-input");
+    terminalInput.onkeypress = function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            //console.log('e', e);
+            console.log('terminalInput', terminalInput.value);
+            socket.emit('sioin', terminalInput.value);
+            outResult(terminalInput.value);
+            terminalInput.value = '';
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    }
+    terminalInput.focus();
+    //socket.emit('sioin', 'set users:leto "{name: leto, planet: dune, likes: [spice]}"');
+    //socket.emit('sioin', 'get users:leto');
+</script>
+</body>
 </html>
