@@ -6,6 +6,8 @@ if (process.env.REDIS_URL) {
     var redis = require("redis");
 }
 
+console.log(process.env.REDIS_URL, redis);
+
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http, {
