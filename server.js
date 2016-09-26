@@ -1,4 +1,5 @@
 var redis = require("redis");
+var cors = require("./cors");
 
 //console.log(process.env.REDIS_URL);
 
@@ -16,6 +17,8 @@ if (process.env.REDIS_URL) {
 client.on("error", function (err) {
     console.log("Error " + err);
 });
+
+app.use(cors.cors);
 
 app.get('/', function (expReq, expRes) {
     var msg = expReq.query.cmd || 'info';
