@@ -53,7 +53,8 @@
         var el = document.createElement('pre');
         el.innerHTML = msg;
         terminalRes.appendChild(el);
-        pymChild.sendHeight();
+        var height = (document.getElementsByTagName('body')[0].offsetHeight + 1).toString();
+        pymChild.sendMessage('height', height);
     }
     socket.on('sioerr', outResult);
     socket.on('sioout', outResult);
