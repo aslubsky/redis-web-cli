@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-size: 13px;
+            line-height: 1.42857;
+            font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+            background-color: #F5F5F5;
+        }
+
+        #terminal {
+            background-color: #F5F5F5;
+            color: #333333;
+            padding: 10px;
+        }
+
+        #terminal-res {
+            max-height: 238px;
+            overflow: auto;
+        }
+
+        #terminal-input {
+            background-color: #F5F5F5;
+            border: 0 none;
+            outline: none;
+            border-radius: 0;
+            color: #333333;
+            width: 100%;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="terminal">
+    <div id="terminal-res"></div>
+    <input id="terminal-input" onkeypress="return runCmd(event)" type="text">
+</div>
+<script src="bower_components/socket.io-client/socket.io.js"></script>
+<script src="bower_components/pym.js/dist/pym.min.js"></script>
+<script>
+    var pymChild = new pym.Child();
+    var terminalRes = document.getElementById("terminal-res");
+    var socket = io();
+    function outResult(msg) {
+        var el = document.createElement('pre');
+        el.innerHTML = msg;
+        terminalRes.appendChild(el);
+        pymChild.sendHeight();
+    }
+    socket.on('sioerr', outResult);
+    socket.on('sioout', outResult);
+    var terminalInput = document.getElementById("terminal-input");
+    terminalInput.onkeypress = function (e) {
+        if (e.which == 13 || e.keyCode == 13) {
+            //console.log('e', e);
+            console.log('terminalInput', terminalInput.value);
+            socket.emit('sioin', terminalInput.value);
+            outResult(terminalInput.value);
+            terminalInput.value = '';
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    }
+    terminalInput.focus();
+    //socket.emit('sioin', 'set users:leto "{name: leto, planet: dune, likes: [spice]}"');
+    //socket.emit('sioin', 'get users:leto');
+</script>
+</body>
+</html>
