@@ -63,7 +63,7 @@
             //console.log('e', e);
             console.log('terminalInput', terminalInput.value);
             socket.emit('sioin', terminalInput.value);
-            outResult(terminalInput.value);
+            outResult('> ' + terminalInput.value);
             terminalInput.value = '';
             e.preventDefault();
             return false;
