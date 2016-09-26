@@ -45,7 +45,10 @@ app.get('/api', function (expReq, expRes) {
         if (err) {
             expRes.json(err);
         } else {
-            expRes.json(res);
+            expRes.json({
+                code: "OK",
+                data: res
+            });
         }
     });
     client[cmd].apply(client, args);
