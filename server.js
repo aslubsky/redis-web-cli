@@ -61,6 +61,7 @@ app.get('/api', function (expReq, expRes) {
 app.get('/', function (req, res) {
     res.sendfile('index.html');
 });
+app.use('/assets', express.static(__dirname + '/assets'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 ///REDIS_URL:

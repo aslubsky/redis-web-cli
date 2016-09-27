@@ -1,0 +1,25 @@
+.play-code {
+    position: relative;
+    max-height: 242px;
+    overflow-y: auto;
+}
+.play-code code.res {
+    border-top: 1px dotted #c0c0c0;
+    display: none;
+    margin-top: 5px;
+    padding-top: 5px;
+}
+.play-code code.res.error {
+    color: red;
+}
+.play-code .play-btn {
+    border-bottom: 10px solid transparent;
+    border-left: 20px solid #666666;
+    border-top: 10px solid transparent;
+    cursor: pointer;
+    height: 0;
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    width: 0;
+}
