@@ -90,6 +90,11 @@ function parseMsg(msg) {
         ];
     }
     if (cmd == 'zadd') {
+        args.forEach(function(arg, i){
+            if(!isNaN(arg)) {
+                args[i] = parseInt(arg, 10);
+            }
+        });
         args = [
             args
         ];
