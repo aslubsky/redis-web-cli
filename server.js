@@ -29,7 +29,7 @@ app.get('/api', function (expReq, expRes) {
     var msg = expReq.query.cmd || 'info';
     console.log('cmd', msg);
     var redisReq = parseMsg(msg);
-    //console.log('redisReq: ', redisReq);
+    console.log('redisReq: ', redisReq);
     redisReq.args.push(function (err, res) {
         //console.log('cb', err, res);
         if (err) {
