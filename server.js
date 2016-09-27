@@ -28,19 +28,9 @@ app.use(cors.cors);
 app.get('/api', function (expReq, expRes) {
     var msg = expReq.query.cmd || 'info';
     console.log('cmd', msg);
-
-
-    var args = msg.split(' ');
-    var cmd = args.shift();
-    if (cmd == 'set') {
-        var key = args.shift();
-        args = [
-            key,
-            args.join(' ')
-        ];
-    }
-    //console.log('message: ', cmd, args);
-    args.push(function (err, res) {
+    var redisReq = parseMsg(msg);
+    //console.log('redisReq: ', redisReq);
+    redisReq.args.push(function (err, res) {
         //console.log('cb', err, res);
         if (err) {
             expRes.json(err);
@@ -51,11 +41,8 @@ app.get('/api', function (expReq, expRes) {
             });
         }
     });
-    client[cmd].apply(client, args);
+    client[redisReq.cmd].apply(client, redisReq.args);
 });
-
-
-
 
 
 app.get('/', function (req, res) {
@@ -73,17 +60,9 @@ io.on('connection', function (socket) {
     //client.get("string key", "string val", redis.print);
 
     socket.on('sioin', function (msg) {
-        var args = msg.split(' ');
-        var cmd = args.shift();
-        if (cmd == 'set') {
-            var key = args.shift();
-            args = [
-                key,
-                args.join(' ')
-            ];
-        }
-        //console.log('message: ', cmd, args);
-        args.push(function (err, res) {
+        var redisReq = parseMsg(msg);
+        //console.log('redisReq: ', redisReq);
+        redisReq.args.push(function (err, res) {
             //console.log('cb', err, res);
             if (err) {
                 socket.emit('sioerr', err);
@@ -91,7 +70,7 @@ io.on('connection', function (socket) {
                 socket.emit('sioout', res);
             }
         });
-        client[cmd].apply(client, args);
+        client[redisReq.cmd].apply(client, redisReq.args);
     });
 });
 
@@ -99,3 +78,19 @@ io.on('connection', function (socket) {
 http.listen((process.env.PORT || 5000), function () {
     console.log('listening on *:5000');
 });
+
+function parseMsg(msg) {
+    var args = msg.split(' ');
+    var cmd = args.shift();
+    if (cmd == 'set' || cmd == 'append') {
+        var key = args.shift();
+        args = [
+            key,
+            args.join(' ')
+        ];
+    }
+    return {
+        cmd: cmd,
+        args: args
+    };
+}
