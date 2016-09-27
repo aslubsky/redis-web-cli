@@ -13,6 +13,9 @@ $(function () {
 
         $.get('https://murmuring-meadow-73077.herokuapp.com/api?cmd=' + cmd).then(function (res) {
             if (res.code == "OK") {
+                if (res.data.length == undefined) {
+                    res.data = JSON.stringify(res.data);
+                }
                 $('code.res', pre).text(res.data).css('display', 'inline-block');
             } else {
                 $('code.res', pre).text(JSON.stringify(res)).addClass('error').css('display', 'inline-block');
