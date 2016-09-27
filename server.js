@@ -89,6 +89,11 @@ function parseMsg(msg) {
             args.join(' ')
         ];
     }
+    if (cmd == 'zadd') {
+        args = [
+            args
+        ];
+    }
     return {
         cmd: cmd,
         args: args
