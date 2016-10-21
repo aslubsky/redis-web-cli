@@ -19,6 +19,7 @@
     cursor: pointer;
     height: 0;
     position: absolute;
+    display: block;
     right: 5px;
     top: 10px;
     width: 0;
